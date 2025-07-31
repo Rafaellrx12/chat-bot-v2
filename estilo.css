@@ -1,0 +1,92 @@
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('fundo.jpg'); /* nome da sua logo */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #f1f1f1;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.92);
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .formulario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .formulario input, .formulario button {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .formulario input {
+    flex: 1 1 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .formulario button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .catalogo {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .catalogo th, .catalogo td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .catalogo th {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  .catalogo a {
+    color: #007BFF;
+    text-decoration: underline;
+  }
+  
+  .editar, .excluir {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .editar {
+    background-color: #28a745;
+    color: white;
+    margin-right: 5px;
+  }
+  
+  .excluir {
+    background-color: #dc3545;
+    color: white;
+  }
