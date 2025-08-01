@@ -9,117 +9,132 @@
         height: 100%;
         margin: 0;
         padding: 0;
-      }
-      body {
-        background: black url("fundo.jpg") no-repeat center center;
-        background-size: contain;
         font-family: Arial, sans-serif;
+        background: black url("fundo.jpg") no-repeat center center fixed;
+        background-size: contain;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        color: #222;
       }
 
       .container {
-        background: rgba(253, 246, 246, 0.87);
+        background: rgba(253, 246, 246, 0.95);
         border-radius: 15px;
-        padding: 25px;
+        padding: 30px 35px;
         width: 90%;
         max-width: 950px;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        z-index: 1;
-        text-align: center;
         display: flex;
         flex-direction: column;
         gap: 30px;
         align-items: center;
+        text-align: center;
+        z-index: 1;
       }
 
       #qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
         color: #222;
-        text-align: center;
       }
 
       #qr-container h2 {
         margin-bottom: 12px;
+        color: #007BFF;
+        font-weight: 700;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
       }
 
       #qrcode {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
+        width: 220px;
+        height: 220px;
         border: 2px dashed #007bff;
         border-radius: 12px;
         padding: 15px;
         background: #f9f9f9;
-        width: 220px;
-        height: 220px;
-        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 10px auto;
       }
 
       #qrcode img {
-        width: 200px;
-        height: 200px;
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 10px;
       }
 
       h1 {
-        color: #222;
+        color: #007BFF;
         font-size: 28px;
         margin: 0;
+        font-weight: 700;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
 
       input[type="text"] {
-        padding: 10px;
-        margin: 5px;
+        padding: 12px 15px;
+        margin: 5px 8px;
         width: 22%;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        transition: 0.2s;
+        border-radius: 10px;
+        border: 1.8px solid #ccc;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        min-width: 140px;
       }
 
       input[type="text"]:focus {
         border-color: #007bff;
         outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
       }
 
       button {
         margin: 10px 0;
-        padding: 10px 18px;
+        padding: 12px 22px;
         border: none;
-        border-radius: 8px;
+        border-radius: 12px;
         color: white;
         background-color: #007bff;
-        font-size: 14px;
+        font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.2s ease;
+        user-select: none;
       }
 
       button:hover {
         background-color: #0056b3;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
       }
 
       .table-container {
-        max-height: 300px;
+        max-height: 320px;
         overflow-y: auto;
         margin-top: 15px;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 12px;
         width: 100%;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.07);
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
         font-size: 15px;
+        min-width: 600px;
       }
 
       th,
       td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 12px 15px;
         text-align: center;
+        vertical-align: middle;
       }
 
       thead {
@@ -127,19 +142,26 @@
         top: 0;
         background-color: #007bff;
         color: white;
-        font-weight: bold;
+        font-weight: 700;
         z-index: 2;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn-editar,
+      .btn-excluir {
+        padding: 8px 14px;
+        border-radius: 12px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        user-select: none;
       }
 
       .btn-editar {
         background-color: #28a745;
         color: white;
-        padding: 6px 12px;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        margin-right: 5px;
-        transition: 0.3s;
+        margin-right: 6px;
       }
 
       .btn-editar:hover {
@@ -149,11 +171,6 @@
       .btn-excluir {
         background-color: #dc3545;
         color: white;
-        padding: 6px 12px;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        transition: 0.3s;
       }
 
       .btn-excluir:hover {
@@ -164,13 +181,13 @@
       #popupEditar {
         display: none;
         position: fixed;
-        top: 20%;
+        top: 15%;
         left: 50%;
         transform: translateX(-50%);
         background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        padding: 25px 30px;
+        border-radius: 14px;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
         z-index: 10000;
         width: 400px;
         max-width: 90%;
@@ -178,16 +195,80 @@
       }
 
       #popupEditar input[type="text"] {
-        width: 90%;
-        margin-bottom: 15px;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
+        width: 100%;
+        margin-bottom: 18px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1.5px solid #ccc;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+      }
+
+      #popupEditar input[type="text"]:focus {
+        border-color: #007BFF;
+        outline: none;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.35);
       }
 
       #popupEditar button {
         width: 48%;
         margin: 0 1%;
+        padding: 12px 0;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+
+      /* Popup Loading */
+      #popupLoading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 15000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .popup-loading-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.45);
+        z-index: 15001;
+      }
+
+      .popup-loading-content {
+        position: relative;
+        background: white;
+        padding: 25px 40px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #007BFF;
+        z-index: 15002;
+        user-select: none;
+      }
+
+      /* Responsividade */
+      @media (max-width: 600px) {
+        input[type="text"] {
+          width: 100% !important;
+          margin: 5px 0 !important;
+        }
+
+        .table-container {
+          max-height: 240px;
+        }
+
+        #popupEditar {
+          width: 95%;
+          padding: 20px 15px;
+        }
       }
     </style>
   </head>
@@ -196,23 +277,15 @@
       <div id="qr-container">
         <h2>Conecte seu WhatsApp</h2>
         <div id="qrcode">Aguardando QR Code...</div>
+        <button onclick="iniciarBot()">Gerar QR Code</button>
+        <button onclick="pararBot()">Desconectar Bot</button>
       </div>
 
       <h1>Catálogo de Produtos</h1>
 
       <form id="formAdicionar">
-        <input
-          id="novoNome"
-          type="text"
-          placeholder="Nome do Produto"
-          required
-        />
-        <input
-          id="novoDescricao"
-          type="text"
-          placeholder="Descrição"
-          required
-        />
+        <input id="novoNome" type="text" placeholder="Nome do Produto" required />
+        <input id="novoDescricao" type="text" placeholder="Descrição" required />
         <input
           id="novoValor"
           type="text"
@@ -248,18 +321,8 @@
       <h3>Editar Produto</h3>
       <form id="formEditar">
         <input type="hidden" id="editarId" />
-        <input
-          id="editarNome"
-          type="text"
-          placeholder="Nome do Produto"
-          required
-        />
-        <input
-          id="editarDescricao"
-          type="text"
-          placeholder="Descrição"
-          required
-        />
+        <input id="editarNome" type="text" placeholder="Nome do Produto" required />
+        <input id="editarDescricao" type="text" placeholder="Descrição" required />
         <input
           id="editarValor"
           type="text"
@@ -272,6 +335,14 @@
         <button type="submit">Salvar</button>
         <button type="button" onclick="fecharPopup()">Cancelar</button>
       </form>
+    </div>
+
+    <!-- Popup Loading -->
+    <div id="popupLoading">
+      <div class="popup-loading-backdrop"></div>
+      <div class="popup-loading-content">
+        <p>Processando...</p>
+      </div>
     </div>
 
     <script src="script.js"></script>
@@ -292,6 +363,39 @@
       function fecharPopup() {
         document.getElementById("popupEditar").style.display = "none";
       }
+
+      // Mostrar e esconder popup Loading
+      function mostrarLoading() {
+        document.getElementById("popupLoading").style.display = "flex";
+      }
+
+      function esconderLoading() {
+        document.getElementById("popupLoading").style.display = "none";
+      }
+
+      // Alteração: iniciarBot dispara fetch sem await e esconde popup após 2s
+      function iniciarBot() {
+        mostrarLoading();
+        fetch("/bot/start", { method: "POST" })
+          .catch(() => {
+            alert("Erro ao iniciar o bot. Verifique se o servidor está rodando.");
+          });
+        setTimeout(() => {
+          esconderLoading();
+        }, 2000);
+      }
+
+      async function pararBot() {
+        mostrarLoading();
+        try {
+          await fetch("/bot/stop", { method: "POST" });
+          document.getElementById("qrcode").innerHTML = "Bot desconectado";
+        } catch (e) {
+          alert("Erro ao desconectar o bot. Verifique se o servidor está rodando.");
+        } finally {
+          esconderLoading();
+        }
+      }
     </script>
 
     <!-- WebSocket para receber o QR -->
@@ -299,9 +403,9 @@
     <script>
       const socket = io();
       socket.on("qr", (qr) => {
-        document.getElementById(
-          "qrcode"
-        ).innerHTML = `<img src="${qr}" alt="QR Code do WhatsApp" />`;
+        document.getElementById("qrcode").innerHTML = qr
+          ? `<img src="${qr}" alt="QR Code do WhatsApp" />`
+          : "Conectado ou sem QR ativo";
       });
     </script>
   </body>

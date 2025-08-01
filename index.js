@@ -1,6 +1,6 @@
 import { botResponses } from "./mensagens.js";
 import qrcode from "qrcode-terminal";
-import fetch from "node-fetch"; // Se usar Node >=18, pode remover
+import fetch from "node-fetch"; // Se usar Node >=18 pode remover
 import { Client } from "whatsapp-web.js";
 import express from "express";
 import { Server } from "socket.io";
@@ -15,7 +15,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const client = new Client();
+// Controle do bot
+let client = null;
+let botAtivo = false;
+
+// Cache de produtos
 let products = [];
 
 // Controle de interação
@@ -49,81 +53,120 @@ function formatInitialMessage(text) {
     .trim();
 }
 
-// ---------------- Bot WhatsApp ----------------
-client.on("qr", (qr) => {
-  qrcode.generate(qr, { small: true }); // Mostra no terminal
-  io.emit(
-    "qr",
-    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qr)}`
-  );
-});
+// ---------------- Bot: Start e Stop ----------------
+async function iniciarBot() {
+  if (botAtivo) return;
 
-client.on("ready", async () => {
-  console.log("🛍️ Bot pronto!");
-  products = await loadProductCatalog();
-});
+  client = new Client();
+  botAtivo = true;
 
-client.on("message", async (message) => {
-  if (message.from.includes("@g.us")) return;
-
-  const userMessage = formatInitialMessage(message.body);
-  const userId = message.from;
-  const agora = Date.now();
-
-  const ultimaHora = ultimaInteracao.get(userId);
-  const isNovaConversa = !ultimaHora || agora - ultimaHora >= TEMPO_INATIVIDADE;
-
-  ultimaInteracao.set(userId, agora);
-
-  if (isNovaConversa) {
-    await message.reply(botResponses.boasVindas);
-    return;
-  }
-
-  if (["menu", "oi", "ola"].includes(userMessage)) {
-    await message.reply(botResponses.boasVindas);
-  } else if (userMessage === "1") {
-    await message.reply(botResponses.listaProdutos(products));
-  } else if (userMessage === "2") {
-    await message.reply(botResponses.formasPagamento);
-  } else if (userMessage === "3") {
-    await message.reply(botResponses.ajuda);
-  } else {
-    const matchedProduct = products.find((p) =>
-      userMessage.includes(p.nome.toLowerCase())
+  client.on("qr", (qr) => {
+    qrcode.generate(qr, { small: true });
+    io.emit(
+      "qr",
+      `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qr)}`
     );
-    if (matchedProduct) {
-      await message.reply(botResponses.detalhesProduto(matchedProduct));
+  });
+
+  client.on("ready", async () => {
+    console.log("🛍️ Bot pronto!");
+    products = await loadProductCatalog();
+    io.emit("qr", ""); // limpa QR quando conectado
+  });
+
+  client.on("message", async (message) => {
+    if (message.from.includes("@g.us")) return;
+
+    const userMessage = formatInitialMessage(message.body);
+    const userId = message.from;
+    const agora = Date.now();
+
+    const ultimaHora = ultimaInteracao.get(userId);
+    const isNovaConversa = !ultimaHora || agora - ultimaHora >= TEMPO_INATIVIDADE;
+
+    ultimaInteracao.set(userId, agora);
+
+    if (isNovaConversa) {
+      await message.reply(botResponses.boasVindas);
+      return;
+    }
+
+    if (["menu", "oi", "ola"].includes(userMessage)) {
+      await message.reply(botResponses.boasVindas);
+    } else if (userMessage === "1") {
+      await message.reply(botResponses.listaProdutos(products));
+    } else if (userMessage === "2") {
+      await message.reply(botResponses.formasPagamento);
+    } else if (userMessage === "3") {
+      await message.reply(botResponses.ajuda);
     } else {
-      await message.reply(botResponses.naoEntendi);
-    }
-  }
-});
-
-// Timer para encerrar sessão
-setInterval(async () => {
-  const agora = Date.now();
-  for (const [idContato, ultimaHora] of ultimaInteracao.entries()) {
-    if (agora - ultimaHora >= TEMPO_INATIVIDADE) {
-      await client.sendMessage(
-        idContato,
-        "⏰ Sua sessão foi encerrada por inatividade.\n\nDigite *menu* para começar novamente."
+      const matchedProduct = products.find((p) =>
+        userMessage.includes(p.nome.toLowerCase())
       );
-      ultimaInteracao.delete(idContato);
+      if (matchedProduct) {
+        await message.reply(botResponses.detalhesProduto(matchedProduct));
+      } else {
+        await message.reply(botResponses.naoEntendi);
+      }
     }
-  }
-}, 60 * 1000);
+  });
 
-client.initialize();
+  client.on("disconnected", () => {
+    botAtivo = false;
+    client = null;
+    io.emit("qr", ""); // Limpa QR
+    console.log("Bot desconectado");
+  });
 
-// ---------------- Servir arquivos estáticos ----------------
-app.use(express.static(__dirname)); // Serve index.html e assets da mesma pasta
+  // Timer para encerrar sessão
+  setInterval(async () => {
+    const agora = Date.now();
+    for (const [idContato, ultimaHora] of ultimaInteracao.entries()) {
+      if (agora - ultimaHora >= TEMPO_INATIVIDADE) {
+        await client.sendMessage(
+          idContato,
+          "⏰ Sua sessão foi encerrada por inatividade.\n\nDigite *menu* para começar novamente."
+        );
+        ultimaInteracao.delete(idContato);
+      }
+    }
+  }, 60 * 1000);
 
-// Rota para catálogo (serve o index.html)
+  client.initialize();
+}
+
+async function pararBot() {
+  if (!client) return;
+  await client.destroy();
+  client = null;
+  botAtivo = false;
+  io.emit("qr", ""); // Limpa QR
+  console.log("Bot parado manualmente");
+}
+
+// ---------------- Rotas HTTP ----------------
+app.use(express.static(__dirname));
+
 app.get("/catalogo", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+app.post("/bot/start", async (req, res) => {
+  await iniciarBot();
+  res.json({ status: "Bot iniciado" });
+});
+
+app.post("/bot/stop", async (req, res) => {
+  await pararBot();
+  res.json({ status: "Bot parado" });
+});
+
+// ---------------- WebSocket ----------------
+io.on("connection", () => {
+  console.log("Cliente conectado via WebSocket");
+});
+
+// ---------------- Iniciar servidor ----------------
 server.listen(3000, () => {
   console.log("Acesse http://localhost:3000/catalogo para ver o catálogo e QR Code");
 });

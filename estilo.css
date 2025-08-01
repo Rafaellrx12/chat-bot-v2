@@ -1,92 +1,154 @@
 body {
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-image: url('fundo.jpg'); /* nome da sua logo */
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background-attachment: fixed;
-    background-color: #f1f1f1;
-  }
-  
-  .container {
-    background-color: rgba(255, 255, 255, 0.92);
-    max-width: 960px;
-    margin: 40px auto;
-    padding: 20px 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.15);
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333;
-  }
-  
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+    url('fundo.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.97);
+  max-width: 960px;
+  width: 90%;
+  margin: 0 auto 40px auto;
+  padding: 30px 40px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #0056b3;
+  font-weight: 700;
+  font-size: 2.2rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.formulario {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.formulario input,
+.formulario button {
+  font-size: 16px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1.8px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 200px;
+}
+
+.formulario input {
+  flex: 1 1 220px;
+  border-color: #bbb;
+}
+
+.formulario input:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+}
+
+.formulario button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  min-width: 140px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.formulario button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.catalogo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.catalogo th,
+.catalogo td {
+  border: 1px solid #ddd;
+  padding: 14px 18px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.catalogo th {
+  background-color: #007BFF;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.catalogo a {
+  color: #007BFF;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.catalogo a:hover {
+  color: #0056b3;
+}
+
+.editar,
+.excluir {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.editar {
+  background-color: #28a745;
+  color: white;
+  margin-right: 8px;
+}
+
+.editar:hover {
+  background-color: #218838;
+}
+
+.excluir {
+  background-color: #dc3545;
+  color: white;
+}
+
+.excluir:hover {
+  background-color: #b02a37;
+}
+
+/* Responsividade simples */
+@media (max-width: 600px) {
   .formulario {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
+    flex-direction: column;
+    gap: 12px;
   }
-  
-  .formulario input, .formulario button {
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .formulario input {
-    flex: 1 1 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
+
+  .formulario input,
   .formulario button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .catalogo {
     width: 100%;
-    border-collapse: collapse;
+    min-width: auto;
   }
-  
-  .catalogo th, .catalogo td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
-  }
-  
-  .catalogo th {
-    background-color: #007BFF;
-    color: white;
-  }
-  
-  .catalogo a {
-    color: #007BFF;
-    text-decoration: underline;
-  }
-  
-  .editar, .excluir {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .editar {
-    background-color: #28a745;
-    color: white;
-    margin-right: 5px;
-  }
-  
-  .excluir {
-    background-color: #dc3545;
-    color: white;
-  }
+}
