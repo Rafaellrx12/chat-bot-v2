@@ -86,17 +86,30 @@
     <script>
       // Alterna entre seções
       function mostrarSecao(secao) {
-        const secaoQr = document.getElementById("secao-qr");
-        const secaoCrud = document.getElementById("secao-crud");
+      const secaoQr = document.getElementById("secao-qr");
+      const secaoCrud = document.getElementById("secao-crud");
+      // Pega os botões da navegação
+      const btnQr = document.querySelector("#navegacao button:nth-child(1)");
+      const btnCrud = document.querySelector("#navegacao button:nth-child(2)");
 
-        if (secao === "qr") {
-          secaoQr.style.display = "block";
-          secaoCrud.style.display = "none";
-        } else {
-          secaoQr.style.display = "none";
-          secaoCrud.style.display = "block";
-        }
+      if (secao === "qr") {
+        secaoQr.style.display = "block";
+        secaoCrud.style.display = "none";
+        // Adiciona a classe 'ativo' ao botão clicado e remove do outro
+        btnQr.classList.add("ativo");
+        btnCrud.classList.remove("ativo");
+      } else {
+        secaoQr.style.display = "none";
+        secaoCrud.style.display = "block";
+        // Adiciona a classe 'ativo' ao botão clicado e remove do outro
+        btnCrud.classList.add("ativo");
+        btnQr.classList.remove("ativo");
       }
+      }
+      // Para garantir que o botão inicial já venha com a classe
+      document.addEventListener('DOMContentLoaded', () => {
+          document.querySelector("#navegacao button:nth-child(1)").classList.add("ativo");
+      });
 
       function formatarMoeda(campo) {
         let valor = campo.value.replace(/\D/g, "");
@@ -128,7 +141,7 @@
         });
         setTimeout(() => {
           esconderLoading();
-        }, 2000);
+        }, 6000);
       }
 
       async function pararBot() {

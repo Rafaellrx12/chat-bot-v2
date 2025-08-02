@@ -256,3 +256,11 @@ th, td {
   background: #0056b3;
   transform: translateY(-2px);
 }
+/* ESTILO DO BOTÃO ATIVO */
+/* ESTILO ATIVO RECOMENDADO */
+#navegacao button.ativo {
+  background: #007bff;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  font-weight: 700;
+}
