@@ -157,8 +157,8 @@ async function pararBot() {
 // ---------------- Rotas HTTP ----------------
 app.use(express.static(__dirname));
 
-app.get("/catalogo", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "authqrcode.html"));
 });
 
 app.post("/bot/start", async (req, res) => {
@@ -179,6 +179,6 @@ io.on("connection", () => {
 // ---------------- Iniciar servidor ----------------
 server.listen(3000, () => {
   console.log(
-    "Acesse http://localhost:3000/catalogo para ver o catálogo e QR Code"
+    "Acesse http://localhost:3000/ para ver o catálogo e QR Code"
   );
 });

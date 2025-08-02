@@ -7,56 +7,52 @@
   </head>
   <body>
     <div class="container">
-      <div id="qr-container">
-        <h2>Conecte seu WhatsApp</h2>
-        <div id="qrcode">Aguardando QR Code...</div>
-        <div id="status-conexao">Aguardando ação...</div>
-        <button onclick="iniciarBot()">Gerar QR Code</button>
-        <button onclick="pararBot()">Desconectar Bot</button>
+      <!-- Navegação -->
+      <div id="navegacao">
+        <button onclick="mostrarSecao('qr')">📲 WhatsApp</button>
+        <button onclick="mostrarSecao('crud')">📦 Catálogo</button>
       </div>
 
-      <h1>Catálogo de Produtos</h1>
+      <!-- Seção QR Code WhatsApp -->
+      <div id="secao-qr">
+        <div id="qr-container">
+          <h2>Conecte seu WhatsApp</h2>
+          <div id="qrcode">Aguardando QR Code...</div>
+          <div id="status-conexao">Aguardando ação...</div>
+          <button onclick="iniciarBot()">Gerar QR Code</button>
+          <button onclick="pararBot()">Desconectar Bot</button>
+        </div>
+      </div>
 
-      <form id="formAdicionar">
-        <input
-          id="novoNome"
-          type="text"
-          placeholder="Nome do Produto"
-          required
-        />
-        <input
-          id="novoDescricao"
-          type="text"
-          placeholder="Descrição"
-          required
-        />
-        <input
-          id="novoValor"
-          type="text"
-          placeholder="Valor"
-          oninput="formatarMoeda(this)"
-          required
-        />
-        <input id="novoLink" type="text" placeholder="Link" required />
-        <br />
-        <button type="submit">Adicionar</button>
-      </form>
+      <!-- Seção Catálogo CRUD -->
+      <div id="secao-crud" style="display: none;">
+        <h1>Catálogo de Produtos</h1>
 
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Descrição</th>
-              <th>Valor</th>
-              <th>Link</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabelaCorpo">
-            <!-- Conteúdo dinâmico -->
-          </tbody>
-        </table>
+        <form id="formAdicionar">
+          <input id="novoNome" type="text" placeholder="Nome do Produto" required />
+          <input id="novoDescricao" type="text" placeholder="Descrição" required />
+          <input id="novoValor" type="text" placeholder="Valor" oninput="formatarMoeda(this)" required />
+          <input id="novoLink" type="text" placeholder="Link" required />
+          <br />
+          <button type="submit">Adicionar</button>
+        </form>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Link</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaCorpo">
+              <!-- Conteúdo dinâmico -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -65,25 +61,9 @@
       <h3>Editar Produto</h3>
       <form id="formEditar">
         <input type="hidden" id="editarId" />
-        <input
-          id="editarNome"
-          type="text"
-          placeholder="Nome do Produto"
-          required
-        />
-        <input
-          id="editarDescricao"
-          type="text"
-          placeholder="Descrição"
-          required
-        />
-        <input
-          id="editarValor"
-          type="text"
-          placeholder="Valor"
-          oninput="formatarMoeda(this)"
-          required
-        />
+        <input id="editarNome" type="text" placeholder="Nome do Produto" required />
+        <input id="editarDescricao" type="text" placeholder="Descrição" required />
+        <input id="editarValor" type="text" placeholder="Valor" oninput="formatarMoeda(this)" required />
         <input id="editarLink" type="text" placeholder="Link" required />
         <br />
         <button type="submit">Salvar</button>
@@ -99,10 +79,25 @@
       </div>
     </div>
 
+    <!-- SCRIPTS -->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 
     <script>
-      // Função para formatar moeda no input
+      // Alterna entre seções
+      function mostrarSecao(secao) {
+        const secaoQr = document.getElementById("secao-qr");
+        const secaoCrud = document.getElementById("secao-crud");
+
+        if (secao === "qr") {
+          secaoQr.style.display = "block";
+          secaoCrud.style.display = "none";
+        } else {
+          secaoQr.style.display = "none";
+          secaoCrud.style.display = "block";
+        }
+      }
+
       function formatarMoeda(campo) {
         let valor = campo.value.replace(/\D/g, "");
         if (valor.length === 0) {
@@ -118,7 +113,6 @@
         document.getElementById("popupEditar").style.display = "none";
       }
 
-      // Mostrar e esconder popup Loading
       function mostrarLoading() {
         document.getElementById("popupLoading").style.display = "flex";
       }
@@ -146,30 +140,21 @@
             "❌ Bot parado manualmente.";
           document.getElementById("status-conexao").style.color = "red";
         } catch (e) {
-          alert(
-            "Erro ao desconectar o bot. Verifique se o servidor está rodando."
-          );
+          alert("Erro ao desconectar o bot. Verifique se o servidor está rodando.");
         } finally {
           esconderLoading();
         }
       }
 
-      
-    </script>
-
-    <!-- WebSocket para receber QR e status -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
+      // WebSocket para QR code
       const socket = io();
 
-      // Recebe QR Code
       socket.on("qr", (qr) => {
         document.getElementById("qrcode").innerHTML = qr
           ? `<img src="${qr}" alt="QR Code do WhatsApp" />`
           : "Conectado ou sem QR ativo";
       });
 
-      // Recebe status
       socket.on("status", (mensagem) => {
         const statusDiv = document.getElementById("status-conexao");
         statusDiv.textContent = mensagem;
