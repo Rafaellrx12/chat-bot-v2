@@ -64,14 +64,21 @@ async function iniciarBot() {
     qrcode.generate(qr, { small: true });
     io.emit(
       "qr",
-      `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qr)}`
+      `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+        qr
+      )}`
     );
+    io.emit("status", "Aguardando conexão do WhatsApp...");
   });
 
   client.on("ready", async () => {
     console.log("🛍️ Bot pronto!");
     products = await loadProductCatalog();
-    io.emit("qr", ""); // limpa QR quando conectado
+
+    // Limpa QR do front
+    io.emit("qr", "");
+    // Envia status para front
+    io.emit("status", "✅ WhatsApp conectado com sucesso!");
   });
 
   client.on("message", async (message) => {
@@ -82,7 +89,8 @@ async function iniciarBot() {
     const agora = Date.now();
 
     const ultimaHora = ultimaInteracao.get(userId);
-    const isNovaConversa = !ultimaHora || agora - ultimaHora >= TEMPO_INATIVIDADE;
+    const isNovaConversa =
+      !ultimaHora || agora - ultimaHora >= TEMPO_INATIVIDADE;
 
     ultimaInteracao.set(userId, agora);
 
@@ -114,7 +122,8 @@ async function iniciarBot() {
   client.on("disconnected", () => {
     botAtivo = false;
     client = null;
-    io.emit("qr", ""); // Limpa QR
+    io.emit("qr", "");
+    io.emit("status", "❌ Bot desconectado do WhatsApp.");
     console.log("Bot desconectado");
   });
 
@@ -140,7 +149,8 @@ async function pararBot() {
   await client.destroy();
   client = null;
   botAtivo = false;
-  io.emit("qr", ""); // Limpa QR
+  io.emit("qr", "");
+  io.emit("status", "❌ Bot parado manualmente.");
   console.log("Bot parado manualmente");
 }
 
@@ -168,5 +178,7 @@ io.on("connection", () => {
 
 // ---------------- Iniciar servidor ----------------
 server.listen(3000, () => {
-  console.log("Acesse http://localhost:3000/catalogo para ver o catálogo e QR Code");
+  console.log(
+    "Acesse http://localhost:3000/catalogo para ver o catálogo e QR Code"
+  );
 });

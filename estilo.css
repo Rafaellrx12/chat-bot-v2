@@ -1,154 +1,233 @@
+/* Fundo geral */
 body {
-  height: 100vh;
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: 
-    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
-    url('fundo.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: #333;
+  background: linear-gradient(to bottom, rgba(20,20,20,0.95), rgba(10,10,10,0.95)),
+              url('fundo.jpg') center/cover no-repeat fixed;
+  color: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 40px;
+  padding: 40px 10px;
 }
 
+/* Container principal */
 .container {
-  background-color: rgba(255, 255, 255, 0.97);
-  max-width: 960px;
-  width: 90%;
-  margin: 0 auto 40px auto;
-  padding: 30px 40px;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-h1 {
+  width: 100%;
+  max-width: 950px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 30px 35px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
   text-align: center;
-  margin-bottom: 30px;
-  color: #0056b3;
+}
+
+/* Títulos */
+h1 {
+  font-size: 2rem;
+  margin: 20px 0;
+  color: #fff;
   font-weight: 700;
-  font-size: 2.2rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.formulario {
+/* QR Code e Status */
+#qr-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 30px;
+}
+
+#qrcode {
+  width: 200px;
+  height: 200px;
+  background: rgba(255,255,255,0.12);
+  border: 2px dashed #007bff;
+  border-radius: 12px;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 15px;
+  color: #ccc;
 }
 
-.formulario input,
-.formulario button {
-  font-size: 16px;
-  padding: 12px 15px;
-  border-radius: 10px;
-  border: 1.8px solid #ccc;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  min-width: 200px;
+#status-conexao {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #00ff9d;
 }
 
-.formulario input {
-  flex: 1 1 220px;
-  border-color: #bbb;
-}
-
-.formulario input:focus {
-  border-color: #007BFF;
-  outline: none;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
-}
-
-.formulario button {
-  background-color: #007BFF;
-  color: white;
+/* Botões */
+button {
+  margin: 8px;
+  padding: 12px 24px;
   border: none;
-  cursor: pointer;
-  min-width: 140px;
+  border-radius: 10px;
+  background: #007bff;
+  color: #fff;
+  font-size: 16px;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.15s ease;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.formulario button:hover {
-  background-color: #0056b3;
+button:hover {
+  background: #0056b3;
   transform: translateY(-2px);
 }
 
-.catalogo {
+/* Formulário */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+form input[type="text"] {
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  min-width: 180px;
+  font-size: 16px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+form input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+  background: rgba(255,255,255,0.25);
+}
+
+/* Tabela */
+.table-container {
+  max-height: 320px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+table {
   width: 100%;
   border-collapse: collapse;
   font-size: 15px;
+  color: #fff;
 }
 
-.catalogo th,
-.catalogo td {
-  border: 1px solid #ddd;
-  padding: 14px 18px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.catalogo th {
-  background-color: #007BFF;
-  color: white;
+thead {
+  background: #007bff;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
-.catalogo a {
-  color: #007BFF;
-  text-decoration: underline;
-  transition: color 0.3s ease;
+th, td {
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px;
+  text-align: center;
 }
 
-.catalogo a:hover {
-  color: #0056b3;
-}
-
-.editar,
-.excluir {
-  padding: 8px 16px;
+/* Botões editar/excluir */
+.btn-editar {
+  background: #28a745;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #fff;
   border: none;
-  border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+}
+
+.btn-excluir {
+  background: #dc3545;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-editar:hover { background: #218838; }
+.btn-excluir:hover { background: #b02a37; }
+
+/* Popup editar centralizado e visível */
+#popupEditar {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1e1e1e;
+  padding: 25px 30px;
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  color: #fff;
+}
+
+#popupEditar input[type="text"] {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #ccc;
+  font-size: 16px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* Loading centralizado */
+#popupLoading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 15000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-loading-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.45);
+}
+
+.popup-loading-content {
+  position: relative;
+  background: #1e1e1e;
+  padding: 25px 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #007BFF;
+  z-index: 15002;
   user-select: none;
 }
 
-.editar {
-  background-color: #28a745;
-  color: white;
-  margin-right: 8px;
-}
-
-.editar:hover {
-  background-color: #218838;
-}
-
-.excluir {
-  background-color: #dc3545;
-  color: white;
-}
-
-.excluir:hover {
-  background-color: #b02a37;
-}
-
-/* Responsividade simples */
+/* Responsivo */
 @media (max-width: 600px) {
-  .formulario {
-    flex-direction: column;
-    gap: 12px;
+  .container {
+    padding: 20px;
   }
-
-  .formulario input,
-  .formulario button {
+  form {
+    flex-direction: column;
+    gap: 10px;
+  }
+  form input[type="text"] {
     width: 100%;
-    min-width: auto;
   }
 }
+
