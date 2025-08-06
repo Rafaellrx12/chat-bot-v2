@@ -19,7 +19,7 @@ export const botResponses = {
       const precoFormatado =
         typeof p.preco === "number" ? p.preco.toFixed(2) : "Preço indisponível";
 
-      texto += `${i + 1}. ${p.nome} - R$${precoFormatado}\n`;
+      texto += ` - ${p.nome} - R$${precoFormatado}\n`;
     });
 
     texto += "\nDigite o *nome do produto* para ver mais detalhes.";
